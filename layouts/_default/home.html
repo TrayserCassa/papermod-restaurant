@@ -1,0 +1,54 @@
+{{- define "main" }}
+
+{{ range .Site.Params.customCSS -}}
+  <link rel="stylesheet" href="{{ . | absURL }}">
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{ end }}
+
+<ul class="terms-tags">
+{{ range site.Sections }}
+  <li>
+    <a href="#{{ .Title }}">{{ .Title }}</a>
+  </li>
+{{ end }}
+</ul>
+
+<hr/>
+
+{{ range site.Sections }}
+  {{- partial "custom_anchor.html" .Title -}}
+  <br/>
+  {{ range .Pages }}
+<article class="post-entry tag-entry card">
+  <div>
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">
+        {{- .Title }}
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    </div>
+  </div>
+{{ $image := resources.Get .Params.image }}
+{{ with $image }}
+  <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}">
+{{ end }}
+
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+</article>
+  {{ end }}
+{{ end }}
+
+{{ range site.RegularPages }}
+
+{{- end }}
+
+{{- end }}{{- /* end main */ -}}

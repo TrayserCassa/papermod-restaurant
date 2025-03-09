@@ -1,0 +1,85 @@
+# Run npm run build on each push to the main branch
+# Store the directory public as an artifact
+#
+# name: Build
+#
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+#
+# jobs:
+#     build:
+#       runs-on: ubuntu-latest
+#       steps:
+#         - name: Checkout repository
+#           uses: actions/checkout@v2
+#
+#         - name: Use Node.js
+#           uses: actions/setup-node@v4
+#           with:
+#             node-version: '22.14'
+#
+#         - name: Cache Node.js modules
+#           uses: actions/cache@v3
+#           with:
+#             path: ~/.npm
+#             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#             restore-keys: |
+#               ${{ runner.os }}-node-
+#
+#         - name: Cache Go modules
+#           uses: actions/cache@v3
+#           with:
+#             path: |
+#               ~/.cache/go-build
+#               ~/go/pkg/mod
+#             key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+#             restore-keys: |
+#               ${{ runner.os }}-go-
+#
+#         - name: Cache Hugo installation
+#           uses: actions/cache@v3
+#           with:
+#             path: ~/go/bin/hugo
+#             key: ${{ runner.os }}-hugo-extended-latest
+#
+#         - name: Install hugo
+#           run: |
+#             if [ ! -f ~/go/bin/hugo ]; then
+#               CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+#             fi
+#
+#         - name: Install dependencies
+#           run: npm install
+#
+#         - name: Build
+#           run: |
+#             export PATH=${PATH}:`go env GOPATH`/bin
+#             npm run build
+#
+#         - name: Generate zip file
+#           run: zip -r public.zip public
+#
+#         - name: Archive production artifact
+#           uses: actions/upload-artifact@v4
+#           if: github.event.pull_request.number == null
+#           with:
+#             name: website
+#             path: public.zip
+#
+#         - name: Deploy to FTP server
+#           if: github.ref == 'refs/heads/main'
+#           uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+#           with:
+#             server: www503.your-server.de
+#             username: foo
+#             password: ${{ secrets.FTP_PASSWORD }}
+#             local-dir: ./public/
+#             server-dir: public_html/
+#             protocol: ftps
+#             security: strict
+#             dangerous-clean-slate: false

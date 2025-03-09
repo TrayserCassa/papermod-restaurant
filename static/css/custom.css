@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  justify-content: space-between; 
+}
+
+
+.card-image img {
+  max-width: 220px; /* Ensure the image scales responsively */
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Medienabfrage für mobile Geräte */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column; /* Inhalt untereinander anordnen */
+    align-items: stretch;
+  }
+
+  .card-image {
+    display: flex;
+    margin-top: 16px; /* Space between image and text */
+    width: 100%; /* Take up full width */
+    justify-content: center; /* Center image */
+    text-align: center; /* Center align content */
+  }
+
+  .card-image img {
+  max-width: 320px; /* Ensure the image scales responsively */
+  }
+
+
+  .card-price {
+    margin-top: 10px; /* Abstand zum Rest */
+  }
+
+  .card-body {
+    text-align: center; /* Text in der Card mittig ausrichten */
+  }
+}
