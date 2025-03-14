@@ -33,13 +33,14 @@
         {{- .Title }}
       </h2>
     </header>
+    <p>{{ .Params.price }}€</p>
     <div class="entry-content">
       <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
     </div>
   </div>
 {{ $image := resources.Get .Params.image }}
 {{ with $image }}
-  <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}">
+  <img class="card-image" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}">
 {{ end }}
 
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
