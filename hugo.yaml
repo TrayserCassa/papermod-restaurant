@@ -10,7 +10,16 @@ buildExpired: false
 minify:
   disableXML: true
   minifyOutput: true
-
+menu:
+  main:
+    - identifier: contact
+      name: Kontakt
+      url: /pages/contact/
+      weight: 10
+    - identifier: impressum
+      name: Impressum
+      url: /pages/impressum/
+      weight: 20
 params:
   customCSS:
     - "css/custom.css"

@@ -14,6 +14,9 @@
 
 <ul class="terms-tags">
 {{ range site.Sections }}
+  {{ if eq .Title "Pages" }}
+    {{ continue }}
+  {{ end }}
   <li>
     <a href="#{{ .Title }}">{{ .Title }}</a>
   </li>
@@ -23,6 +26,9 @@
 <hr/>
 
 {{ range site.Sections }}
+  {{ if eq .Title "Pages" }}
+    {{ continue }}
+  {{ end }}
   {{- partial "custom_anchor.html" .Title -}}
   <br/>
   {{ range .Pages }}
